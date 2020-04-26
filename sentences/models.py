@@ -1,6 +1,5 @@
 from django.db import models
 
-from . import nlp
 
 class Text(models.Model):
     created_at = models.DateTimeField('Created At', auto_now_add=True)
@@ -13,6 +12,7 @@ class Text(models.Model):
 
     @classmethod
     def parse_and_create(cls, **kwargs):
+        from . import nlp
         text = cls.objects.create(title=kwargs['title'])
         text.save()
         text_sentences = nlp.split_to_sentences(kwargs['content'])

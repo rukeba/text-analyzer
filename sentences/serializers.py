@@ -17,9 +17,9 @@ class SentenceSerializer(serializers.ModelSerializer):
         fields = ['id', 'content']
 
 
-class SimilarSentencesSerializer(serializers.Serializer):
-    source = SentenceSerializer(read_only=True)
-    similar = SentenceSerializer(many=True, read_only=True)
+class SimilarSentenceSerializer(serializers.Serializer):
+    similarity = serializers.FloatField(read_only=True)
+    sentence = SentenceSerializer(read_only=True)
 
 
 class TextSerializer(serializers.ModelSerializer):
