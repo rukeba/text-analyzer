@@ -3,6 +3,7 @@ from .models import Text, Sentence
 
 
 class NewTextSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(required=True, allow_blank=False, max_length=200)
     content = serializers.CharField(required=True, allow_blank=False, trim_whitespace=True, max_length=100000, write_only=True)
 
@@ -13,7 +14,7 @@ class NewTextSerializer(serializers.Serializer):
 class SentenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sentence
-        fields = ['id', 'number', 'content']
+        fields = ['id', 'content']
 
 
 class SimilarSentencesSerializer(serializers.Serializer):
@@ -22,6 +23,12 @@ class SimilarSentencesSerializer(serializers.Serializer):
 
 
 class TextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Text
+        fields = ['id', 'title', 'created_at']
+
+
+class TextDetailSerializer(serializers.ModelSerializer):
     sentences = SentenceSerializer(many=True, read_only=True)
 
     class Meta:

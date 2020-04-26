@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Text, Sentence
-from .serializers import TextSerializer, NewTextSerializer, SimilarSentencesSerializer
+from .serializers import NewTextSerializer, TextSerializer, TextDetailSerializer, SentenceSerializer, SimilarSentencesSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -32,7 +32,7 @@ def text_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = TextSerializer(text)
+        serializer = TextDetailSerializer(text)
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
@@ -41,12 +41,21 @@ def text_detail(request, pk):
 
 
 @api_view(['GET'])
+def sentence_detail(request, text_pk, sentence_pk):
+    try:
+        sentence, _ = Sentence.find(text_pk, sentence_pk)
+    except (Text.DoesNotExist, Sentence.DoesNotExist):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = SentenceSerializer(sentence)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def sentence_similar_list(request, text_pk, sentence_pk):
     try:
-        text = Text.objects.get(pk=text_pk)
-        sentence = Sentence.objects.get(pk=sentence_pk)
-        if sentence.text.id != text.id:
-            raise Sentence.DoesNotExist()
+        sentence, text = Sentence.find(text_pk, sentence_pk)
     except (Text.DoesNotExist, Sentence.DoesNotExist):
         return Response(status=status.HTTP_404_NOT_FOUND)
 

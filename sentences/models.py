@@ -12,7 +12,7 @@ class Text(models.Model):
 
     @classmethod
     def parse_and_create(cls, **kwargs):
-        text = Text.objects.create(title=kwargs['title'])
+        text = cls.objects.create(title=kwargs['title'])
         text.save()
         text_sentences = kwargs['content'].split('.')
         order = 0
@@ -32,3 +32,12 @@ class Sentence(models.Model):
     class Meta:
         ordering = ['number']
         unique_together = ['number', 'text']
+
+    @classmethod
+    def find(cls, text_pk, sentence_pk):
+        """Finds sentence by pk and parent text pk. Raises Text.DoesNotExist, Sentence.DoesNotExist."""
+        text = Text.objects.get(pk=text_pk)
+        sentence = Sentence.objects.get(pk=sentence_pk)
+        if sentence.text.id != text.id:
+            raise cls.DoesNotExist()
+        return sentence, text
