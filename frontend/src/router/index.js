@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TextsList from '../views/TextsList.vue'
+import TextsList from '@/views/TextsList.vue'
+import TextSentences from '@/views/TextSentences'
+import Sentence from '@/views/Sentence'
 
 Vue.use(VueRouter)
 
@@ -13,12 +15,12 @@ const routes = [
   {
     path: '/text/:text_id',
     name: 'TextSentences',
-    component: () => import(/* webpackChunkName: "text" */ '../views/TextSentences.vue')
+    component: TextSentences
   },
   {
     path: '/text/:text_id/sentence/:sentence_id',
     name: 'Sentence',
-    component: () => import(/* webpackChunkName: "sentence" */ '../views/Sentence.vue')
+    component: Sentence
   }
 ]
 
