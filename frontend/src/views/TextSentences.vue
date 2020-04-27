@@ -1,30 +1,36 @@
 <template>
   <div class="text">
-    <h3 class="clearfix">
-      <router-link to="/" class="btn btn-default pull-right">Back to Texts List</router-link>
-      <span class="text-muted">Text Title:</span>
-      {{text.title}}
-    </h3>
-    <table class="table table-condensed table-striped table-hover">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Sentence</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="sentence in text.sentences"
-          :key="sentence.id"
-          >
-        <td>{{sentence.number}}</td>
-        <td>{{sentence.content}}</td>
-        <td>
-          <router-link :to="`/text/${text_id}/sentence/${sentence.id}`" class="btn btn-default">Show Similar</router-link>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div v-if="is_loading">
+      Loading text...
+    </div>
+
+    <div v-else>
+      <h3 class="clearfix">
+        <router-link to="/" class="btn btn-default pull-right">Back to Texts List</router-link>
+        <span class="text-muted">Text Title:</span>
+        {{text.title}}
+      </h3>
+      <table class="table table-condensed table-striped table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Sentence</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="sentence in text.sentences"
+            :key="sentence.id"
+            >
+          <td>{{sentence.number}}</td>
+          <td>{{sentence.content}}</td>
+          <td>
+            <router-link :to="`/text/${text_id}/sentence/${sentence.id}`" class="btn btn-default btn-sm">Show Similar</router-link>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -48,6 +54,7 @@ export default {
   methods: {
     fetchText () {
       const url = '/api/text/' + this.text_id + '/'
+      this.is_loading = true
       axios
         .get(url)
         .then(resp => {
@@ -55,6 +62,9 @@ export default {
         })
         .catch(err => {
           console.log(err)
+        })
+        .finally(() => {
+          this.is_loading = false
         })
     }
   }

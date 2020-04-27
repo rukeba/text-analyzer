@@ -23,11 +23,12 @@
     <hr/>
 
     <h2>Texts</h2>
+
     <div v-if="text_loading" class="loading">
       Loading Texts...
     </div>
 
-    <div v-if="text_list">
+    <div v-else>
       <table class="table table-condensed table-hover table-striped">
         <thead>
         <tr>
