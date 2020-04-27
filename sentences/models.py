@@ -10,13 +10,16 @@ class Text(models.Model):
             self._cached_str_ = f'{self.title} ({self.sentences.count()-1} sentences)'
         return self._cached_str_
 
+    class Meta:
+        ordering = ['-created_at']
+
     @classmethod
     def parse_and_create(cls, **kwargs):
         from . import nlp
         text = cls.objects.create(title=kwargs['title'])
         text.save()
         text_sentences = nlp.split_to_sentences(kwargs['content'])
-        order = 0
+        order = 1
         for sentence_content in text_sentences:
             sentence = Sentence.objects.create(number=order, content=sentence_content.strip(), text=text)
             sentence.save()

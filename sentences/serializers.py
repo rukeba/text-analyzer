@@ -14,7 +14,7 @@ class NewTextSerializer(serializers.Serializer):
 class SentenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sentence
-        fields = ['id', 'content']
+        fields = ['id', 'number', 'content']
 
 
 class SimilarSentenceSerializer(serializers.Serializer):
