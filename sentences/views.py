@@ -8,6 +8,10 @@ from .serializers import NewTextSerializer, TextSerializer, TextDetailSerializer
 from .nlp import find_similar
 
 
+def ui(request):
+    return render(request, 'index.html')
+
+
 @api_view(['GET', 'POST'])
 def text_list(request):
     if request.method == 'GET':

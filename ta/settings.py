@@ -23,9 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'l)0l@4ewd*-u(k7ujxagm))vl!g17(saz&!9!u+p2rdrqnek%2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.path.exists(os.path.join(BASE_DIR, 'DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'analyzer.textpage.app',
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
@@ -55,8 +59,10 @@ ROOT_URLCONF = 'ta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend', 'dist')
+        ],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -69,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ta.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -115,7 +120,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'dist', 'static'),
+]
 
 STATIC_URL = '/static/'
