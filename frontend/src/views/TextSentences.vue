@@ -36,9 +36,13 @@
 
 <script>
 import axios from 'axios'
+import { ApiErrorsHandlerMixin } from '@/api/api-errors-handler-mixin'
 
 export default {
   name: 'TextSentences',
+  mixins: [
+    ApiErrorsHandlerMixin
+  ],
   data: () => ({
     text: {},
     is_loading: true
@@ -60,9 +64,7 @@ export default {
         .then(resp => {
           this.text = resp.data
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(this.apiErrorHandler('Fetching text with sentences'))
         .finally(() => {
           this.is_loading = false
         })

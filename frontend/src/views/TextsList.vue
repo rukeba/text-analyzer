@@ -55,9 +55,13 @@
 
 <script>
 import axios from 'axios'
+import { ApiErrorsHandlerMixin } from '@/api/api-errors-handler-mixin'
 
 export default {
   name: 'TextsList',
+  mixins: [
+    ApiErrorsHandlerMixin
+  ],
   data: () => ({
     new_text: {
       title: '',
@@ -84,9 +88,7 @@ export default {
         .then(resp => {
           this.text_list = resp.data
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(this.apiErrorHandler('Fetching texts'))
         .finally(() => {
           this.text_loading = false
         })
@@ -98,9 +100,7 @@ export default {
         .then(resp => {
           this.fetchTexts()
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(this.apiErrorHandler('Submitting text'))
         .finally(() => {
           this.form_loading = false
           this.resetForm()
@@ -118,9 +118,7 @@ export default {
           .then(resp => {
             this.fetchTexts()
           })
-          .catch(err => {
-            console.log(err)
-          })
+          .catch(this.apiErrorHandler('Deleting text'))
       }
     }
   }

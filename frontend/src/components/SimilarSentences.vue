@@ -33,9 +33,13 @@
 
 <script>
 import axios from 'axios'
+import { ApiErrorsHandlerMixin } from '@/api/api-errors-handler-mixin'
 
 export default {
   name: 'SimilarSentences',
+  mixins: [
+    ApiErrorsHandlerMixin
+  ],
   props: {
     text_id: String,
     sentence_id: String
@@ -56,9 +60,7 @@ export default {
         .then(resp => {
           this.similar = resp.data
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(this.apiErrorHandler('Fetching similar sentences'))
         .finally(() => {
           this.is_loading = false
         })

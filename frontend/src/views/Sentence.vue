@@ -17,10 +17,14 @@
 
 <script>
 import axios from 'axios'
+import { ApiErrorsHandlerMixin } from '@/api/api-errors-handler-mixin'
 import SimilarSentences from '@/components/SimilarSentences'
 
 export default {
   name: 'Sentence',
+  mixins: [
+    ApiErrorsHandlerMixin
+  ],
   components: {
     SimilarSentences
   },
@@ -48,9 +52,7 @@ export default {
         .then(resp => {
           this.sentence = resp.data
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(this.apiErrorHandler('Fetching sentence'))
         .finally(() => {
           this.is_loading = false
         })
