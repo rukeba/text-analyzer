@@ -26,7 +26,7 @@ SECRET_KEY = 'l)0l@4ewd*-u(k7ujxagm))vl!g17(saz&!9!u+p2rdrqnek%2'
 DEBUG = os.path.exists(os.path.join(BASE_DIR, 'DEBUG'))
 
 ALLOWED_HOSTS = [
-    'analyzer.textpage.app',
+    'analyze.textpage.app',
     '127.0.0.1',
     'localhost'
 ]
