@@ -4,8 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Text, Sentence
-from .serializers import NewTextSerializer, TextSerializer, TextDetailSerializer, SentenceSerializer, SimilarSentenceSerializer
-from .nlp import find_similar
+from .serializers import NewTextSerializer, TextSerializer, TextDetailSerializer, \
+    SentenceSerializer, SimilarTextSerializer
+from .nlp import NLProcessor
 
 
 def ui(request):
@@ -63,9 +64,9 @@ def sentence_similar_list(request, text_pk, sentence_pk):
     except (Text.DoesNotExist, Sentence.DoesNotExist):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    other = text.sentences.exclude(pk=sentence.id)
-    similar = find_similar(sentence, other)
-    serializer = SimilarSentenceSerializer(similar, many=True)
+    other = Sentence.objects.exclude(pk=sentence.id).prefetch_related('text')
+    similar = NLProcessor().find_similar(sentence, other)
+    serializer = SimilarTextSerializer(similar, many=True)
     return Response(serializer.data)
 
 

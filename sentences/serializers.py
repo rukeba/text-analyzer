@@ -11,10 +11,17 @@ class NewTextSerializer(serializers.Serializer):
         return Text.parse_and_create(**validated_data)
 
 
+class TextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Text
+        fields = ['id', 'title', 'created_at']
+
+
 class SentenceSerializer(serializers.ModelSerializer):
+    text = TextSerializer(read_only=True, required=False)
     class Meta:
         model = Sentence
-        fields = ['id', 'number', 'content']
+        fields = ['id', 'number', 'content', 'text']
 
 
 class SimilarSentenceSerializer(serializers.Serializer):
@@ -22,10 +29,9 @@ class SimilarSentenceSerializer(serializers.Serializer):
     sentence = SentenceSerializer(read_only=True)
 
 
-class TextSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Text
-        fields = ['id', 'title', 'created_at']
+class SimilarTextSerializer(serializers.Serializer):
+    text = TextSerializer()
+    similar_sentences = SimilarSentenceSerializer(many=True, read_only=True)
 
 
 class TextDetailSerializer(serializers.ModelSerializer):
