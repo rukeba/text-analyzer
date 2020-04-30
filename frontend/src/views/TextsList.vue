@@ -14,7 +14,7 @@
                     class="form-control" placeholder="Text here..." rows="6"></textarea>
         </div>
         <button type="submit" class="btn btn-default" :disabled="!allow_form_submit">
-          <span v-if="form_loading">Submitting...</span>
+          <span v-if="form_loading">Submitting and processing...</span>
           <span v-else>Submit</span>
         </button>
       </form>
@@ -98,7 +98,8 @@ export default {
       axios
         .post('/api/text/', this.new_text)
         .then(resp => {
-          this.fetchTexts()
+          const text = resp.data
+          this.routeToText(text.id)
         })
         .catch(this.apiErrorHandler('Submitting text'))
         .finally(() => {
@@ -120,6 +121,9 @@ export default {
           })
           .catch(this.apiErrorHandler('Deleting text'))
       }
+    },
+    routeToText (textId) {
+      this.$router.push(`/text/${textId}`)
     }
   }
 }

@@ -4,9 +4,14 @@
   </div>
 
   <div v-else>
-    <h3>
+    <h3 class="clearfix">
       <router-link :to="`/text/${text_id}/`" class="btn btn-default pull-right">Back to Text</router-link>
-      Source Sentence <span class="text-muted small">#{{sentence.number}}</span>
+      <span class="text-muted">Text:</span>
+      {{sentence.text.title}}
+    </h3>
+
+    <h3>
+      <span class="text-muted">Sentence:</span> #{{sentence.number}}
     </h3>
     <p class="alert alert-info">{{sentence.content}}</p>
 
